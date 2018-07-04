@@ -4,24 +4,57 @@ namespace BinaryStudioAcademy\Game;
 
 use BinaryStudioAcademy\Game\Contracts\Io\Reader;
 use BinaryStudioAcademy\Game\Contracts\Io\Writer;
+use BinaryStudioAcademy\Game\Exceptions\GameExceptions;
 
 class Game
 {
-    public function start(Reader $reader, Writer $writer): void
+    /**
+     * @var Storage
+     */
+    public $storage;
+
+    /**
+     * Game constructor.
+     * @param Storage $storage
+     */
+    public function __construct(Storage $storage)
     {
-        // TODO: Implement infinite loop and process user's input
-        // Feel free to delete these lines
-        $writer->writeln("You can't play yet. Please read input and convert it to commands.");
-        $writer->writeln("Don't forget to create game's world.");
-        $writer->write("Type your name:");
-        $input = trim($reader->read());
-        $writer->writeln("Good luck with this task, {$input}!");
+        $this->storage = $storage;
     }
 
+    /**
+     * @param Reader $reader
+     * @param Writer $writer
+     */
+    public function start(Reader $reader, Writer $writer): void
+    {
+        $writer->writeln("Hi, engineer! Let's build spaceship");
+
+        while (true) {
+            $this->run($reader, $writer);
+        }
+    }
+
+    /**
+     * @param Reader $reader
+     * @param Writer $writer
+     */
     public function run(Reader $reader, Writer $writer): void
     {
-        // TODO: Implement step by step mode with game state persistence between steps
-        $writer->writeln("You can't play yet. Please read input and convert it to commands.");
-        $writer->writeln("Don't forget to create game's world.");
+        $writer->write("Input :> ");
+        $input = trim(strtolower($reader->read()));
+        try {
+            $slice = explode(':', $input);
+            $commandName = $slice[0];
+            $commandInstruction = $slice[1] ?? '';
+
+            $commandFactory = new CommandFactory();
+            $command = $commandFactory->createCommand($commandName);
+            $command->execute($commandInstruction);
+        } catch (GameExceptions $e) {
+            $writer->writeln($e->getMessage());
+        } catch (\Exception $e) {
+            $writer->writeln($e->getMessage());
+        }
     }
 }
