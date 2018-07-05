@@ -9,6 +9,9 @@ class WiresScheme extends AbstractScheme
 {
     public static function getNecessaryComponents(): array
     {
-        return [Storage::COPPER, Storage::FIRE];
+        return [
+            ['type' => Storage::RESOURCE, 'item' => Storage::COPPER],
+            ['type' => Storage::RESOURCE, 'item' => Storage::FIRE]
+        ];
     }
 }

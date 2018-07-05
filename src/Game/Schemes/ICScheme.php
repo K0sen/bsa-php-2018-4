@@ -9,6 +9,9 @@ class ICScheme extends AbstractScheme
 {
     public static function getNecessaryComponents(): array
     {
-        return [Storage::METAL, Storage::SILICON];
+        return [
+            ['type' => Storage::RESOURCE, 'item' => Storage::METAL],
+            ['type' => Storage::RESOURCE, 'item' => Storage::SILICON]
+        ];
     }
 }

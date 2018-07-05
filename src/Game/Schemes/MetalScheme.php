@@ -9,6 +9,9 @@ class MetalScheme extends AbstractScheme
 {
     public static function getNecessaryComponents(): array
     {
-        return [Storage::IRON, Storage::FIRE];
+        return [
+            ['type' => Storage::RESOURCE, 'item' => Storage::IRON],
+            ['type' => Storage::RESOURCE, 'item' => Storage::FIRE]
+        ];
     }
 }

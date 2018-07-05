@@ -9,6 +9,9 @@ class ShellScheme extends AbstractScheme
 {
     public static function getNecessaryComponents(): array
     {
-        return [Storage::METAL, Storage::FIRE];
+        return [
+            ['type' => Storage::RESOURCE, 'item' => Storage::METAL],
+            ['type' => Storage::RESOURCE, 'item' => Storage::FIRE]
+        ];
     }
 }

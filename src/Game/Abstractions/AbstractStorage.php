@@ -17,7 +17,7 @@ abstract class AbstractStorage
     public const WATER   = 'water';
     public const FUEL    = 'fuel';
 
-    // components
+    // modules
     public const IC           = 'ic';
     public const WIRES        = 'wires';
     public const SHELL        = 'shell';
@@ -27,10 +27,10 @@ abstract class AbstractStorage
     public const LAUNCHER     = 'launcher';
     public const TANK         = 'tank';
 
-    public const COMPONENT = 'component';
+    public const MODULE    = 'module';
     public const RESOURCE  = 'resource';
 
-    protected $components = [];
+    protected $modules    = [];
     protected $resources  = [];
 
     /**
@@ -56,12 +56,22 @@ abstract class AbstractStorage
     public function checkAvailability(string $type, string $item): bool
     {
         switch ($type) {
-            case self::COMPONENT:
-                return \in_array($item, $this->components, true);
+            case self::MODULE:
+                return \in_array($item, $this->modules, true);
             case self::RESOURCE:
                 return \in_array($item, $this->resources, true);
             default:
                 throw new GameExceptions(GameExceptions::UNKNOWN_ITEM, $item);
         }
+    }
+
+    public function getResources()
+    {
+        return $this->resources;
+    }
+
+    public function getModules()
+    {
+        return $this->modules;
     }
 }

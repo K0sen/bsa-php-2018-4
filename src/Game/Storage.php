@@ -7,7 +7,7 @@ use BinaryStudioAcademy\Game\Exceptions\GameExceptions;
 
 class Storage extends AbstractStorage
 {
-    private const ALLOWED_COMPONENTS = [
+    private const ALLOWED_MODULES = [
         self::IC,
         self::WIRES,
         self::SHELL,
@@ -39,16 +39,16 @@ class Storage extends AbstractStorage
     public function put(string $type, string $item): void
     {
         switch ($type) {
-            case self::COMPONENT:
-                if (!\in_array($item, self::ALLOWED_COMPONENTS, true)) {
+            case self::MODULE:
+                if (!\in_array($item, self::ALLOWED_MODULES, true)) {
                     throw new GameExceptions(GameExceptions::UNKNOWN_ITEM, $item);
                 }
 
-                if (\in_array($item, $this->components, true)) {
-                    throw new GameExceptions(GameExceptions::COMPONENT_EXISTS, $item);
+                if (\in_array($item, $this->modules, true)) {
+                    throw new GameExceptions(GameExceptions::MODULE_EXISTS, $item);
                 }
 
-                $this->components[] = $item;
+                $this->modules[] = $item;
                 break;
 
             case self::RESOURCE:
@@ -80,13 +80,13 @@ class Storage extends AbstractStorage
     public function get(string $type, string $item): ?string
     {
         switch ($type) {
-            case self::COMPONENT:
-                if (!\in_array($item, $this->components, true)) {
+            case self::MODULE:
+                if (!\in_array($item, $this->modules, true)) {
                     return null;
                 }
 
-                $key = array_search($item, $this->components, true);
-                unset($this->components[$key]);
+                $key = array_search($item, $this->modules, true);
+                unset($this->modules[$key]);
 
                 return $item;
 
@@ -96,10 +96,21 @@ class Storage extends AbstractStorage
                 }
 
                 $this->resources[$item]--;
+                var_dump($this->resources);
                 return $item;
 
             default:
                 throw new GameExceptions(GameExceptions::UNKNOWN_ITEM_TYPE, $type);
         }
+    }
+
+    public function getAvailableResources()
+    {
+        return self::ALLOWED_RESOURCES;
+    }
+
+    public function getAvailableModules()
+    {
+        return self::ALLOWED_MODULES;
     }
 }

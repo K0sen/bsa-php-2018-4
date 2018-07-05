@@ -20,11 +20,11 @@ class BuildCommand extends AbstractCommand
         $this->storage = $storage;
     }
     /**
-     * @param string $string
+     * @param string $command
      * @throws \Exception
      */
-    public function execute(string $string = ''): void
+    public function execute(string $command = ''): void
     {
-        $this->storage->put(Storage::COMPONENT, $string);
+        var_dump($this->storage->get(Storage::RESOURCE, $command));
     }
 }

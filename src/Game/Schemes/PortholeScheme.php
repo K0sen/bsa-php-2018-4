@@ -9,6 +9,9 @@ class PortholeScheme extends AbstractScheme
 {
     public static function getNecessaryComponents(): array
     {
-        return [Storage::SAND, Storage::FIRE];
+        return [
+            ['type' => Storage::RESOURCE, 'item' => Storage::SAND],
+            ['type' => Storage::RESOURCE, 'item' => Storage::FIRE]
+        ];
     }
 }

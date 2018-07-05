@@ -2,11 +2,13 @@
 
 namespace BinaryStudioAcademy\Game\Contracts;
 
+use BinaryStudioAcademy\Game\Abstractions\AbstractComponent;
+
 interface BuilderInterface
 {
-    public function getPlan();
+    public function getScheme();
 
-    public function assemble();
+    public function assembleComponent(array $scheme);
 
-    public function getVehicle(): Component;
+    public function getComponent(): AbstractComponent;
 }

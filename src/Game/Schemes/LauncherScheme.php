@@ -9,6 +9,10 @@ class LauncherScheme extends AbstractScheme
 {
     public static function getNecessaryComponents(): array
     {
-        return [Storage::WATER, Storage::FIRE, Storage::FUEL];
+        return [
+            ['type' => Storage::RESOURCE, 'item' => Storage::WATER],
+            ['type' => Storage::RESOURCE, 'item' => Storage::FIRE],
+            ['type' => Storage::RESOURCE, 'item' => Storage::FUEL]
+        ];
     }
 }

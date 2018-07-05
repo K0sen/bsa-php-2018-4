@@ -4,11 +4,14 @@ namespace BinaryStudioAcademy\Game\Commands;
 
 
 use BinaryStudioAcademy\Game\Abstractions\AbstractCommand;
+use BinaryStudioAcademy\Game\Exceptions\GameExceptions;
+use BinaryStudioAcademy\Game\SchemeFactory;
 use BinaryStudioAcademy\Game\Storage;
 
 class SchemeCommand extends AbstractCommand
 {
-    public $storage;
+    private $storage;
+    private $schemes;
 
     /**
      * SchemeCommand constructor.
@@ -19,6 +22,7 @@ class SchemeCommand extends AbstractCommand
         parent::__construct();
 
         $this->storage = $storage;
+        $this->schemes = new SchemeFactory();
     }
 
     /**
@@ -27,7 +31,20 @@ class SchemeCommand extends AbstractCommand
      */
     public function execute(string $command = ''): void
     {
-        $item = $this->storage->get(Storage::RESOURCE, $command);
-        $this->writer->writeln($item ?? 'no resource');
+        if (!\in_array($command, $this->storage->getAvailableModules(), true)) {
+            throw new GameExceptions(GameExceptions::UNKNOWN_MODULE);
+        }
+
+        $necessaryComponents = $this->schemes->getModuleScheme($command);
+        $this->writeScheme($command, $necessaryComponents);
+    }
+
+    private function writeScheme(string $module, array $components)
+    {
+        $componentsString = implode('|', array_map(function($component) {
+            return $component['item'];
+        }, $components));
+        $moduleName = ucfirst($module);
+        $this->writer->writeln("{$moduleName} => $componentsString");
     }
 }
