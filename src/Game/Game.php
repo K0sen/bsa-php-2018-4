@@ -15,11 +15,10 @@ class Game
 
     /**
      * Game constructor.
-     * @param Storage $storage
      */
-    public function __construct(Storage $storage)
+    public function __construct()
     {
-        $this->storage = $storage;
+        $this->storage = new Storage();
     }
 
     /**
@@ -41,14 +40,14 @@ class Game
      */
     public function run(Reader $reader, Writer $writer): void
     {
-        $writer->write("Input :> ");
-        $input = trim(strtolower($reader->read()));
+        $writer->write('Input :> ');
+        $input = strtolower(trim($reader->read()));
         try {
             $slice = explode(':', $input);
             $commandName = $slice[0];
             $commandInstruction = $slice[1] ?? '';
 
-            $commandFactory = new CommandFactory();
+            $commandFactory = new CommandFactory($this->storage);
             $command = $commandFactory->createCommand($commandName);
             $command->execute($commandInstruction);
         } catch (GameExceptions $e) {

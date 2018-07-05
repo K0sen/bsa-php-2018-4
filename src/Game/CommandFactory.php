@@ -3,21 +3,19 @@
 namespace BinaryStudioAcademy\Game;
 
 use BinaryStudioAcademy\Game\Commands\{
-    HelpCommand,
-    ExitCommand
+    BuildCommand, HelpCommand, ExitCommand, MineCommand, ProduceCommand, SchemeCommand, StatusCommand
 };
 use BinaryStudioAcademy\Game\Contracts\CommandInterface;
 use BinaryStudioAcademy\Game\Exceptions\GameExceptions;
 
 class CommandFactory
 {
-    const HELP    = 'help';
-    const STATUS  = 'status';
-    const BUILD   = 'build';
-    const SCHEME  = 'scheme';
-    const MINE    = 'mine';
-    const PRODUCE = 'produce';
-    const EXIT    = 'exit';
+    protected $storage;
+
+    public function __construct(Storage $storage)
+    {
+        $this->storage = $storage;
+    }
 
     /**
      * @param string $type
@@ -28,19 +26,19 @@ class CommandFactory
     public function createCommand(string $type): CommandInterface
     {
         switch ($type) {
-            case self::HELP:
+            case CommandInterface::HELP:
                 return new HelpCommand();
-            case self::STATUS:
-                return new HelpCommand();
-            case self::BUILD:
-                return new HelpCommand();
-            case self::SCHEME:
-                return new HelpCommand();
-            case self::MINE:
-                return new HelpCommand();
-            case self::PRODUCE:
-                return new HelpCommand();
-            case self::EXIT:
+            case CommandInterface::STATUS:
+                return new StatusCommand($this->storage);
+            case CommandInterface::BUILD:
+                return new BuildCommand($this->storage);
+            case CommandInterface::SCHEME:
+                return new SchemeCommand($this->storage);
+            case CommandInterface::MINE:
+                return new MineCommand($this->storage);
+            case CommandInterface::PRODUCE:
+                return new ProduceCommand($this->storage);
+            case CommandInterface::EXIT:
                 return new ExitCommand();
             default:
                 throw new GameExceptions(GameExceptions::UNKNOWN_COMMAND, $type);

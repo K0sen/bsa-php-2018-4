@@ -8,48 +8,98 @@ use BinaryStudioAcademy\Game\Exceptions\GameExceptions;
 class Storage extends AbstractStorage
 {
     private const ALLOWED_COMPONENTS = [
-        'metal',
-        'ic',
-        'wires',
-        'shell',
-        'porthole',
-        'control_unit',
-        'engine',
-        'launcher',
-        'tank'
+        self::IC,
+        self::WIRES,
+        self::SHELL,
+        self::PORTHOLE,
+        self::CONTROL_UNIT,
+        self::ENGINE,
+        self::LAUNCHER,
+        self::TANK,
+    ];
+
+    private const ALLOWED_RESOURCES = [
+        self::METAL,
+        self::FIRE,
+        self::SAND,
+        self::IRON,
+        self::SILICON,
+        self::COPPER,
+        self::CARBON,
+        self::WATER,
+        self::FUEL,
     ];
 
     /**
-     * @var array
+     * @param string $item
+     * @param string $type
+     *
+     * @throws \Exception
      */
-    private $components = [];
-
-    /**
-     * @param string $component
-     * @return void
-     */
-    public function put(string $component): void
+    public function put(string $type, string $item): void
     {
-        if (!in_array($component, self::ALLOWED_COMPONENTS)) {
-            throw new \InvalidArgumentException('Invalid component given');
-        }
+        switch ($type) {
+            case self::COMPONENT:
+                if (!\in_array($item, self::ALLOWED_COMPONENTS, true)) {
+                    throw new GameExceptions(GameExceptions::UNKNOWN_ITEM, $item);
+                }
 
-        $this->components[] = $component;
+                if (\in_array($item, $this->components, true)) {
+                    throw new GameExceptions(GameExceptions::COMPONENT_EXISTS, $item);
+                }
+
+                $this->components[] = $item;
+                break;
+
+            case self::RESOURCE:
+                if (!\in_array($item, self::ALLOWED_RESOURCES, true)) {
+                    throw new GameExceptions(GameExceptions::UNKNOWN_RESOURCE, $item);
+                }
+
+                if (isset($this->resources[$item])) {
+                    $this->resources[$item]++;
+                } else {
+                    $this->resources[$item] = 1;
+                }
+
+                break;
+
+            default:
+                throw new GameExceptions(GameExceptions::UNKNOWN_ITEM_TYPE, $type);
+        }
     }
 
     /**
-     * @param string $component
-     * @return string
+     * @param string $type
+     * @param string $item
+     *
+     * @return null|string
+     *
+     * @throws \Exception
      */
-    public function get(string $component): string
+    public function get(string $type, string $item): ?string
     {
-        if (!in_array($component, $this->components)) {
-            throw new \InvalidArgumentException('Invalid component given or it does not exist');
+        switch ($type) {
+            case self::COMPONENT:
+                if (!\in_array($item, $this->components, true)) {
+                    return null;
+                }
+
+                $key = array_search($item, $this->components, true);
+                unset($this->components[$key]);
+
+                return $item;
+
+            case self::RESOURCE:
+                if (!array_key_exists($item, $this->resources) || $this->resources[$item] <= 0) {
+                    return null;
+                }
+
+                $this->resources[$item]--;
+                return $item;
+
+            default:
+                throw new GameExceptions(GameExceptions::UNKNOWN_ITEM_TYPE, $type);
         }
-
-        $key = array_search($component, $this->components);
-        unset($this->components[$key]);
-
-        return $component;
     }
 }
