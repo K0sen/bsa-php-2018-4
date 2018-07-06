@@ -17,7 +17,6 @@ use BinaryStudioAcademy\Game\Schemes\{
     TankScheme,
     WiresScheme
 };
-use BinaryStudioAcademy\Game\Storage;
 
 class SchemeFactory
 {

@@ -47,12 +47,12 @@ abstract class AbstractStorage
         }
     }
 
-    public function getResources()
+    public function getResources(): array
     {
         return $this->resources;
     }
 
-    public function getModules()
+    public function getModules(): array
     {
         return $this->modules;
     }

@@ -10,7 +10,6 @@ class Storage extends AbstractStorage
 {
     /**
      * @param AbstractComponent $component
-     * @param string $type
      *
      * @throws \Exception
      */

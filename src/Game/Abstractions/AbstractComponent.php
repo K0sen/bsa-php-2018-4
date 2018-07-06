@@ -55,15 +55,8 @@ abstract class AbstractComponent
         self::WATER,
         self::FUEL,
     ];
-    
-    /**
-     * @var string
-     */
-    public $name;
 
-    /**
-     * @var string
-     */
+    public $name;
     public $type;
 
     /**

@@ -4,12 +4,13 @@ namespace BinaryStudioAcademy\Game\Schemes;
 
 use BinaryStudioAcademy\Game\Abstractions\AbstractComponent;
 use BinaryStudioAcademy\Game\Abstractions\AbstractScheme;
+use BinaryStudioAcademy\Game\Exceptions\GameExceptions;
 
 class MetalScheme extends AbstractScheme
 {
     /**
      * @return array
-     * @throws \BinaryStudioAcademy\Game\Exceptions\GameExceptions
+     * @throws GameExceptions
      */
     public function getNecessaryComponents(): array
     {

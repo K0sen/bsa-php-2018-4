@@ -31,7 +31,6 @@ class ComponentFactory
      * @param string $name
      * @return AbstractComponent
      * @throws GameExceptions
-     * @throws \Exception
      */
     public function getComponent(string $name): AbstractComponent
     {

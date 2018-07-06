@@ -8,9 +8,9 @@ use BinaryStudioAcademy\Game\Abstractions\AbstractComponent;
 class ChiefEngineer
 {
     /**
-     * @param Builder $builder
+     * @param Builder           $builder
      * @param AbstractComponent $component
-     * @param Storage $storage
+     * @param Storage           $storage
      * @return AbstractComponent
      * @throws \Exception
      */

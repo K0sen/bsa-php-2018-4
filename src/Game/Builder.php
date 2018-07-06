@@ -45,9 +45,9 @@ class Builder
     }
 
     /**
-     * @throws \BinaryStudioAcademy\Game\Exceptions\GameExceptions
+     * @throws GameExceptions
      */
-    public function setScheme()
+    public function setScheme(): void
     {
         $this->scheme = $this->schemeFactory->getModuleScheme($this->component->name);
     }
@@ -55,21 +55,19 @@ class Builder
     /**
      * @throws \Exception
      */
-    public function checkComponents()
+    public function checkComponents(): void
     {
         $missingComponents = $this->scheme->getMissingComponents($this->storage);
         if (!empty($missingComponents)) {
-            if (!empty($missingComponents)) {
-                switch ($this->component->type) {
-                    case AbstractComponent::MODULE:
-                        $this->showMissingComponents($missingComponents);
-                        break;
-                    case AbstractComponent::RESOURCE:
-                        $this->showMissingComponents($missingComponents, GameExceptions::NEED_TO_MINE);
-                        break;
-                    default:
-                        throw new GameExceptions(GameExceptions::UNKNOWN_ITEM_TYPE, $this->component->type);
-                }
+            switch ($this->component->type) {
+                case AbstractComponent::MODULE:
+                    $this->showMissingComponents($missingComponents);
+                    break;
+                case AbstractComponent::RESOURCE:
+                    $this->showMissingComponents($missingComponents, GameExceptions::NEED_TO_MINE);
+                    break;
+                default:
+                    throw new GameExceptions(GameExceptions::UNKNOWN_ITEM_TYPE, $this->component->type);
             }
         }
     }
@@ -77,7 +75,7 @@ class Builder
     /**
      * @throws \Exception
      */
-    public function getComponents()
+    public function getComponents(): void
     {
         $components = $this->scheme->getNecessaryComponents();
 
@@ -99,7 +97,7 @@ class Builder
      * @param int $exception
      * @throws \Exception
      */
-    private function showMissingComponents(array $components, $exception = GameExceptions::INV_SHOULD_HAVE)
+    private function showMissingComponents(array $components, $exception = GameExceptions::INV_SHOULD_HAVE): void
     {
         $componentsString = implode(',', $components);
 
