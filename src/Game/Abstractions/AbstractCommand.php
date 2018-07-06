@@ -19,7 +19,7 @@ abstract class AbstractCommand implements CommandInterface
     protected $builder;
 
     protected $commandDescribe = [
-        self::HELP => "'show' - shows available commands",
+        self::HELP => "'help' - shows available commands",
         self::STATUS => "'status' - shows info about amount of available resources and what needed modules",
         self::BUILD => "'build:<spaceship_module>' - builds ship module",
         self::SCHEME => "'scheme:<spaceship_module>' - shows scheme of module - list of needed components",
