@@ -13,4 +13,5 @@ interface CommandInterface
     public const EXIT    = 'exit';
 
     public function execute(string $command = '');
+    public function getMessage();
 }

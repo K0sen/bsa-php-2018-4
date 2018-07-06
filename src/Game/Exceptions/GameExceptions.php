@@ -11,6 +11,9 @@ class GameExceptions extends \Exception
     public const UNKNOWN_ITEM_TYPE = 5;
     public const MODULE_EXISTS     = 6;
     public const NO_SCHEME         = 7;
+    public const UNKNOWN_COMPONENT = 8;
+    public const INV_SHOULD_HAVE   = 9;
+    public const NEED_TO_MINE      = 10;
 
     /**
      * GameExceptions constructor.
@@ -40,6 +43,12 @@ class GameExceptions extends \Exception
                 throw new \Exception("Attention! {$addition} is ready.");
             case self::NO_SCHEME:
                 throw new \Exception("No scheme for {$addition} was found");
+            case self::UNKNOWN_COMPONENT:
+                throw new \Exception("Unknown component {$addition}");
+            case self::INV_SHOULD_HAVE:
+                throw new \Exception("Inventory should have: {$addition}.");
+            case self::NEED_TO_MINE:
+                throw new \Exception("You need to mine: {$addition}.");
             default:
                 throw new \Exception('Unknown game error >_<');
         }

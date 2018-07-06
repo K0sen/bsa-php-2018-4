@@ -5,6 +5,7 @@ namespace BinaryStudioAcademy\Game;
 use BinaryStudioAcademy\Game\Contracts\Io\Reader;
 use BinaryStudioAcademy\Game\Contracts\Io\Writer;
 use BinaryStudioAcademy\Game\Exceptions\GameExceptions;
+use BinaryStudioAcademy\Game\Factories\CommandFactory;
 
 class Game
 {
@@ -50,6 +51,7 @@ class Game
             $commandFactory = new CommandFactory($this->storage);
             $command = $commandFactory->createCommand($commandName);
             $command->execute($commandInstruction);
+            $writer->writeln($command->getMessage());
         } catch (GameExceptions $e) {
             $writer->writeln($e->getMessage());
         } catch (\Exception $e) {

@@ -2,16 +2,20 @@
 
 namespace BinaryStudioAcademy\Game\Schemes;
 
+use BinaryStudioAcademy\Game\Abstractions\AbstractComponent;
 use BinaryStudioAcademy\Game\Abstractions\AbstractScheme;
-use BinaryStudioAcademy\Game\Storage;
 
 class MetalScheme extends AbstractScheme
 {
-    public static function getNecessaryComponents(): array
+    /**
+     * @return array
+     * @throws \BinaryStudioAcademy\Game\Exceptions\GameExceptions
+     */
+    public function getNecessaryComponents(): array
     {
         return [
-            ['type' => Storage::RESOURCE, 'item' => Storage::IRON],
-            ['type' => Storage::RESOURCE, 'item' => Storage::FIRE]
+            $this->componentFactory->getComponent(AbstractComponent::IRON),
+            $this->componentFactory->getComponent(AbstractComponent::FIRE)
         ];
     }
 }

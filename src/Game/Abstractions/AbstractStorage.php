@@ -2,66 +2,48 @@
 
 namespace BinaryStudioAcademy\Game\Abstractions;
 
+use BinaryStudioAcademy\Game\Factories\ComponentFactory;
 use BinaryStudioAcademy\Game\Exceptions\GameExceptions;
 
 abstract class AbstractStorage
 {
-    // resources
-    public const METAL   = 'metal';
-    public const FIRE    = 'fire';
-    public const SAND    = 'sand';
-    public const IRON    = 'iron';
-    public const SILICON = 'silicon';
-    public const COPPER  = 'copper';
-    public const CARBON  = 'carbon';
-    public const WATER   = 'water';
-    public const FUEL    = 'fuel';
-
-    // modules
-    public const IC           = 'ic';
-    public const WIRES        = 'wires';
-    public const SHELL        = 'shell';
-    public const PORTHOLE     = 'porthole';
-    public const CONTROL_UNIT = 'control_unit';
-    public const ENGINE       = 'engine';
-    public const LAUNCHER     = 'launcher';
-    public const TANK         = 'tank';
-
-    public const MODULE    = 'module';
-    public const RESOURCE  = 'resource';
-
+    protected $componentFactory;
     protected $modules    = [];
     protected $resources  = [];
 
-    /**
-     * @param string $type
-     * @param string $item
-     */
-    abstract public function put(string $type, string $item);
+    public function __construct()
+    {
+        $this->componentFactory = new ComponentFactory();
+    }
 
     /**
-     * @param string $type
-     * @param string $item
+     * @param AbstractComponent $item
+     * @return mixed
      */
-    abstract public function get(string $type, string $item);
+    abstract public function put(AbstractComponent $item);
 
     /**
-     * @param string $type
-     * @param string $item
+     * @param AbstractComponent $item
+     * @return AbstractComponent|null
+     */
+    abstract public function get(AbstractComponent $item): ?AbstractComponent;
+
+    /**
+     * @param AbstractComponent $component
      *
      * @return bool
      *
      * @throws \Exception
      */
-    public function checkAvailability(string $type, string $item): bool
+    public function checkAvailability(AbstractComponent $component): bool
     {
-        switch ($type) {
-            case self::MODULE:
-                return \in_array($item, $this->modules, true);
-            case self::RESOURCE:
-                return \in_array($item, $this->resources, true);
+        switch ($component->type) {
+            case AbstractComponent::MODULE:
+                return \in_array($component->name, $this->modules, true);
+            case AbstractComponent::RESOURCE:
+                return isset($this->resources[$component->name]);
             default:
-                throw new GameExceptions(GameExceptions::UNKNOWN_ITEM, $item);
+                throw new GameExceptions(GameExceptions::UNKNOWN_ITEM, $component->name);
         }
     }
 

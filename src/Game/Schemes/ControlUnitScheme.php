@@ -2,16 +2,20 @@
 
 namespace BinaryStudioAcademy\Game\Schemes;
 
+use BinaryStudioAcademy\Game\Abstractions\AbstractComponent;
 use BinaryStudioAcademy\Game\Abstractions\AbstractScheme;
-use BinaryStudioAcademy\Game\Storage;
 
 class ControlUnitScheme extends AbstractScheme
 {
-    public static function getNecessaryComponents(): array
+    /**
+     * @return array
+     * @throws \BinaryStudioAcademy\Game\Exceptions\GameExceptions
+     */
+    public function getNecessaryComponents(): array
     {
         return [
-            ['type' => Storage::MODULE, 'item' => Storage::IC],
-            ['type' => Storage::MODULE, 'item' => Storage::WIRES]
+            $this->componentFactory->getComponent(AbstractComponent::IC),
+            $this->componentFactory->getComponent(AbstractComponent::WIRES)
         ];
     }
 }

@@ -2,20 +2,25 @@
 
 namespace BinaryStudioAcademy\Game\Schemes;
 
+use BinaryStudioAcademy\Game\Abstractions\AbstractComponent;
 use BinaryStudioAcademy\Game\Abstractions\AbstractScheme;
-use BinaryStudioAcademy\Game\Storage;
+
 
 class SpaceshipScheme extends AbstractScheme
 {
-    public static function getNecessaryComponents(): array
+    /**
+     * @return array
+     * @throws \BinaryStudioAcademy\Game\Exceptions\GameExceptions
+     */
+    public function getNecessaryComponents(): array
     {
         return [
-            ['type' => Storage::MODULE, 'item' => Storage::SHELL],
-            ['type' => Storage::MODULE, 'item' => Storage::PORTHOLE],
-            ['type' => Storage::MODULE, 'item' => Storage::CONTROL_UNIT],
-            ['type' => Storage::MODULE, 'item' => Storage::ENGINE],
-            ['type' => Storage::MODULE, 'item' => Storage::LAUNCHER],
-            ['type' => Storage::MODULE, 'item' => Storage::TANK]
+            $this->componentFactory->getComponent(AbstractComponent::SHELL),
+            $this->componentFactory->getComponent(AbstractComponent::PORTHOLE),
+            $this->componentFactory->getComponent(AbstractComponent::CONTROL_UNIT),
+            $this->componentFactory->getComponent(AbstractComponent::ENGINE),
+            $this->componentFactory->getComponent(AbstractComponent::LAUNCHER),
+            $this->componentFactory->getComponent(AbstractComponent::TANK)
         ];
     }
 }

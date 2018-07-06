@@ -2,16 +2,20 @@
 
 namespace BinaryStudioAcademy\Game\Schemes;
 
+use BinaryStudioAcademy\Game\Abstractions\AbstractComponent;
 use BinaryStudioAcademy\Game\Abstractions\AbstractScheme;
-use BinaryStudioAcademy\Game\Storage;
 
 class PortholeScheme extends AbstractScheme
 {
-    public static function getNecessaryComponents(): array
+    /**
+     * @return array
+     * @throws \BinaryStudioAcademy\Game\Exceptions\GameExceptions
+     */
+    public function getNecessaryComponents(): array
     {
         return [
-            ['type' => Storage::RESOURCE, 'item' => Storage::SAND],
-            ['type' => Storage::RESOURCE, 'item' => Storage::FIRE]
+            $this->componentFactory->getComponent(AbstractComponent::SAND),
+            $this->componentFactory->getComponent(AbstractComponent::FIRE)
         ];
     }
 }

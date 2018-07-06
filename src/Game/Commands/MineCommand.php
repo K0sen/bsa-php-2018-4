@@ -3,23 +3,23 @@
 namespace BinaryStudioAcademy\Game\Commands;
 
 use BinaryStudioAcademy\Game\Abstractions\AbstractCommand;
+use BinaryStudioAcademy\Game\Abstractions\AbstractComponent;
+use BinaryStudioAcademy\Game\Factories\ComponentFactory;
 use BinaryStudioAcademy\Game\Exceptions\GameExceptions;
 use BinaryStudioAcademy\Game\Storage;
 
 class MineCommand extends AbstractCommand
 {
     private const MINE_RESOURCES = [
-        Storage::FIRE,
-        Storage::SAND,
-        Storage::IRON,
-        Storage::SILICON,
-        Storage::COPPER,
-        Storage::CARBON,
-        Storage::WATER,
-        Storage::FUEL,
+        AbstractComponent::FIRE,
+        AbstractComponent::SAND,
+        AbstractComponent::IRON,
+        AbstractComponent::SILICON,
+        AbstractComponent::COPPER,
+        AbstractComponent::CARBON,
+        AbstractComponent::WATER,
+        AbstractComponent::FUEL,
     ];
-
-    public $storage;
 
     /**
      * SchemeCommand constructor.
@@ -27,9 +27,7 @@ class MineCommand extends AbstractCommand
      */
     public function __construct(Storage $storage)
     {
-        parent::__construct();
-
-        $this->storage = $storage;
+        parent::__construct($storage);
     }
 
     /**
@@ -42,8 +40,9 @@ class MineCommand extends AbstractCommand
             new GameExceptions(GameExceptions::UNKNOWN_RESOURCE);
         }
 
-        $this->storage->put(Storage::RESOURCE, $command);
-        $resourceName = ucfirst($command);
-        $this->writer->writeln("{$resourceName} added to inventory.");
+        $component = $this->componentFactory->getComponent($command);
+        $this->storage->put($component);
+        $resourceName = ucfirst($component->name);
+        $this->message = "{$resourceName} added to inventory.";
     }
 }

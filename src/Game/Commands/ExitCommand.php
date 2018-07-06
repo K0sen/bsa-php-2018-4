@@ -2,22 +2,27 @@
 
 namespace BinaryStudioAcademy\Game\Commands;
 
-use BinaryStudioAcademy\Game\Contracts\CommandInterface;
-use BinaryStudioAcademy\Game\Io\CliWriter as Writer;
+use BinaryStudioAcademy\Game\Abstractions\AbstractCommand;
+use BinaryStudioAcademy\Game\Storage;
 
-class ExitCommand implements CommandInterface
+class ExitCommand extends AbstractCommand
 {
-    public $writer;
-
-    public function __construct()
+    /**
+     * ExitCommand constructor.
+     * @param Storage $storage
+     */
+    public function __construct(Storage $storage)
     {
-        $this->writer = new Writer();
+        parent::__construct($storage);
     }
 
+    /**
+     * @param string $string
+     */
     public function execute(string $string = ''): void
     {
-        $this->writer->writeln('The pieces of your ship flew the space
-and eventually got on the inhabited planet and destroyed the race living there');
+        $this->message = 'The pieces of your ship flew the space
+and eventually got on the inhabited planet and destroyed the race living there';
         exit;
     }
 }

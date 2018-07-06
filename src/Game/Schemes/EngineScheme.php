@@ -2,17 +2,21 @@
 
 namespace BinaryStudioAcademy\Game\Schemes;
 
+use BinaryStudioAcademy\Game\Abstractions\AbstractComponent;
 use BinaryStudioAcademy\Game\Abstractions\AbstractScheme;
-use BinaryStudioAcademy\Game\Storage;
 
 class EngineScheme extends AbstractScheme
 {
-    public static function getNecessaryComponents(): array
+    /**
+     * @return array
+     * @throws \BinaryStudioAcademy\Game\Exceptions\GameExceptions
+     */
+    public function getNecessaryComponents(): array
     {
         return [
-            ['type' => Storage::RESOURCE, 'item' => Storage::METAL],
-            ['type' => Storage::RESOURCE, 'item' => Storage::CARBON],
-            ['type' => Storage::RESOURCE, 'item' => Storage::FIRE]
+            $this->componentFactory->getComponent(AbstractComponent::METAL),
+            $this->componentFactory->getComponent(AbstractComponent::CARBON),
+            $this->componentFactory->getComponent(AbstractComponent::FIRE)
         ];
     }
 }

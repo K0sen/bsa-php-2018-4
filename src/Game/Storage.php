@@ -2,115 +2,84 @@
 
 namespace BinaryStudioAcademy\Game;
 
+use BinaryStudioAcademy\Game\Abstractions\AbstractComponent;
 use BinaryStudioAcademy\Game\Abstractions\AbstractStorage;
 use BinaryStudioAcademy\Game\Exceptions\GameExceptions;
 
 class Storage extends AbstractStorage
 {
-    private const ALLOWED_MODULES = [
-        self::IC,
-        self::WIRES,
-        self::SHELL,
-        self::PORTHOLE,
-        self::CONTROL_UNIT,
-        self::ENGINE,
-        self::LAUNCHER,
-        self::TANK,
-    ];
-
-    private const ALLOWED_RESOURCES = [
-        self::METAL,
-        self::FIRE,
-        self::SAND,
-        self::IRON,
-        self::SILICON,
-        self::COPPER,
-        self::CARBON,
-        self::WATER,
-        self::FUEL,
-    ];
-
     /**
-     * @param string $item
+     * @param AbstractComponent $component
      * @param string $type
      *
      * @throws \Exception
      */
-    public function put(string $type, string $item): void
+    public function put(AbstractComponent $component): void
     {
-        switch ($type) {
-            case self::MODULE:
-                if (!\in_array($item, self::ALLOWED_MODULES, true)) {
-                    throw new GameExceptions(GameExceptions::UNKNOWN_ITEM, $item);
+        $componentName = $component->name;
+        switch ($component->type) {
+            case AbstractComponent::MODULE:
+                if (!\in_array($componentName, AbstractComponent::ALLOWED_MODULES, true)) {
+                    throw new GameExceptions(GameExceptions::UNKNOWN_ITEM, $componentName);
                 }
 
-                if (\in_array($item, $this->modules, true)) {
-                    throw new GameExceptions(GameExceptions::MODULE_EXISTS, $item);
-                }
-
-                $this->modules[] = $item;
+                $this->modules[] = $componentName;
                 break;
 
-            case self::RESOURCE:
-                if (!\in_array($item, self::ALLOWED_RESOURCES, true)) {
-                    throw new GameExceptions(GameExceptions::UNKNOWN_RESOURCE, $item);
+            case AbstractComponent::RESOURCE:
+                if (!\in_array($componentName, AbstractComponent::ALLOWED_RESOURCES, true)) {
+                    throw new GameExceptions(GameExceptions::UNKNOWN_RESOURCE, $componentName);
                 }
 
-                if (isset($this->resources[$item])) {
-                    $this->resources[$item]++;
+                if (isset($this->resources[$componentName])) {
+                    $this->resources[$componentName]++;
                 } else {
-                    $this->resources[$item] = 1;
+                    $this->resources[$componentName] = 1;
                 }
 
                 break;
 
             default:
-                throw new GameExceptions(GameExceptions::UNKNOWN_ITEM_TYPE, $type);
+                throw new GameExceptions(GameExceptions::UNKNOWN_ITEM_TYPE, $component->type);
         }
     }
 
     /**
-     * @param string $type
-     * @param string $item
+     * @param AbstractComponent $component
      *
-     * @return null|string
+     * @return null|AbstractComponent
      *
      * @throws \Exception
      */
-    public function get(string $type, string $item): ?string
+    public function get(AbstractComponent $component): ?AbstractComponent
     {
-        switch ($type) {
-            case self::MODULE:
-                if (!\in_array($item, $this->modules, true)) {
+        $componentName = $component->name;
+        switch ($component->type) {
+            case AbstractComponent::MODULE:
+                if (!\in_array($componentName, $this->modules, true)) {
                     return null;
                 }
 
-                $key = array_search($item, $this->modules, true);
+                $key = array_search($componentName, $this->modules, true);
                 unset($this->modules[$key]);
 
-                return $item;
+                return $component;
 
-            case self::RESOURCE:
-                if (!array_key_exists($item, $this->resources) || $this->resources[$item] <= 0) {
+            case AbstractComponent::RESOURCE:
+                if (!array_key_exists($componentName, $this->resources)) {
                     return null;
                 }
 
-                $this->resources[$item]--;
-                var_dump($this->resources);
-                return $item;
+                $this->resources[$componentName]--;
+                if ($this->resources[$componentName] < 1) {
+                    unset($this->resources[$componentName]);
+                    return null;
+                }
+
+                return $component;
 
             default:
-                throw new GameExceptions(GameExceptions::UNKNOWN_ITEM_TYPE, $type);
+                throw new GameExceptions(GameExceptions::UNKNOWN_ITEM_TYPE, $component->type);
         }
-    }
-
-    public function getAvailableResources()
-    {
-        return self::ALLOWED_RESOURCES;
-    }
-
-    public function getAvailableModules()
-    {
-        return self::ALLOWED_MODULES;
     }
 }

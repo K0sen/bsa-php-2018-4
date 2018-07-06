@@ -2,7 +2,10 @@
 
 namespace BinaryStudioAcademy\Game\Contracts;
 
+use BinaryStudioAcademy\Game\Storage;
+
 interface SchemeInterface
 {
-    public static function getNecessaryComponents(): array;
+    public function getNecessaryComponents(): array;
+    public function getMissingComponents(Storage $storage): array;
 }

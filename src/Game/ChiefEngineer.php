@@ -4,17 +4,23 @@ namespace BinaryStudioAcademy\Game;
 
 
 use BinaryStudioAcademy\Game\Abstractions\AbstractComponent;
-use BinaryStudioAcademy\Game\Contracts\BuilderInterface;
 
 class ChiefEngineer
 {
-    public function assemble(BuilderInterface $builder): AbstractComponent
+    /**
+     * @param Builder $builder
+     * @param AbstractComponent $component
+     * @param Storage $storage
+     * @return AbstractComponent
+     * @throws \Exception
+     */
+    public function assemble(Builder $builder, AbstractComponent $component, Storage $storage): AbstractComponent
     {
-        $scheme = $builder->getScheme();
-        $builder->addDoors();
-        $builder->addEngine();
-        $builder->addWheel();
+        $builder->createComponent($component, $storage);
+        $builder->setScheme();
+        $builder->checkComponents();
+        $builder->getComponents();
 
-        return $builder->getVehicle();
+        return $builder->getItem();
     }
 }

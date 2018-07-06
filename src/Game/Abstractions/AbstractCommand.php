@@ -2,12 +2,22 @@
 
 namespace BinaryStudioAcademy\Game\Abstractions;
 
+use BinaryStudioAcademy\Game\Builder;
+use BinaryStudioAcademy\Game\ChiefEngineer;
 use BinaryStudioAcademy\Game\Contracts\CommandInterface;
-use BinaryStudioAcademy\Game\Io\CliWriter;
+use BinaryStudioAcademy\Game\Factories\ComponentFactory;
+use BinaryStudioAcademy\Game\Factories\SchemeFactory;
+use BinaryStudioAcademy\Game\Storage;
 
 abstract class AbstractCommand implements CommandInterface
 {
-    protected $writer;
+    protected $storage;
+    protected $message;
+    protected $schemeFactory;
+    protected $componentFactory;
+    protected $chiefEngineer;
+    protected $builder;
+
     protected $commandDescribe = [
         self::HELP => "'show' - shows available commands",
         self::STATUS => "'status' - shows info about amount of available resources and what needed modules",
@@ -18,14 +28,23 @@ abstract class AbstractCommand implements CommandInterface
         self::EXIT => "'exit' - stops the game"
     ];
 
-    public function __construct()
+    public function __construct(Storage $storage)
     {
-        $this->writer = new CliWriter();
+        $this->storage = $storage;
+        $this->schemeFactory = new SchemeFactory();
+        $this->componentFactory = new ComponentFactory();
+        $this->chiefEngineer = new ChiefEngineer();
+        $this->builder = new Builder($this->schemeFactory);
     }
 
     abstract public function execute(string $command = '');
 
     public function getAvailableCommands() {
         return $this->commandDescribe;
+    }
+
+    public function getMessage()
+    {
+        return $this->message;
     }
 }
