@@ -21,8 +21,8 @@ class HelpCommand extends AbstractCommand
      */
     public function execute(string $command = ''): void
     {
-        foreach ($this->getAvailableCommands() as $command) {
-            $this->message = $command;
+        foreach ($this->getAvailableCommands() as $availableCommand) {
+            $this->message .= $availableCommand . PHP_EOL;
         }
     }
 }
