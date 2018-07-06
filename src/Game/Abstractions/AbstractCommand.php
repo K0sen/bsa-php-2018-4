@@ -11,14 +11,7 @@ use BinaryStudioAcademy\Game\Storage;
 
 abstract class AbstractCommand implements CommandInterface
 {
-    protected $storage;
-    protected $message;
-    protected $schemeFactory;
-    protected $componentFactory;
-    protected $chiefEngineer;
-    protected $builder;
-
-    protected $commandDescribe = [
+    protected const COMMAND_DESCRIBE = [
         self::HELP => "'help' - shows available commands",
         self::STATUS => "'status' - shows info about amount of available resources and what needed modules",
         self::BUILD => "'build:<spaceship_module>' - builds ship module",
@@ -27,6 +20,14 @@ abstract class AbstractCommand implements CommandInterface
         self::PRODUCE => "'produce:<combined_resource>' - produces combine resources",
         self::EXIT => "'exit' - stops the game"
     ];
+
+    protected $storage;
+    protected $message;
+    protected $schemeFactory;
+    protected $componentFactory;
+    protected $chiefEngineer;
+
+    protected $builder;
 
     public function __construct(Storage $storage)
     {
@@ -39,8 +40,9 @@ abstract class AbstractCommand implements CommandInterface
 
     abstract public function execute(string $command = '');
 
-    public function getAvailableCommands() {
-        return $this->commandDescribe;
+    public function getAvailableCommands(): array
+    {
+        return self::COMMAND_DESCRIBE;
     }
 
     public function getMessage()
